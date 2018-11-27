@@ -44,7 +44,7 @@ protected:
 public:
 
 	// Constructors
-	Climate(int temp_, int hum_) : temp(temp_), hum(hum_);
+	Climate(double temp_, double hum_);
 
 
 	// Utility
@@ -56,7 +56,7 @@ public:
 };
 
 // Constructor
-Climate::Climate(int temp_, int hum_) :temp(temp_), hum(hum_) {
+Climate::Climate(double temp_, double hum_) :temp(temp_), hum(hum_) {
 	
 	vector <Climate> v;
 	
