@@ -32,8 +32,12 @@ using namespace chrono;
 
 class Climate {
 
+	
+
 private:
 
+	double temperature;
+	double humidity;
 #if fakedata == 1	
 	FakeSensor sensorDevice;
 #else
@@ -50,8 +54,19 @@ protected:
 	float hum[maximum_readings];
 
 public:
+	system_clock::time_point StartTime;
+	double getTemp() { return temperature; }
+	double getHum() { return humidity; }
+	void setTemperature(double newTemperature) {
+		temperature = newTemperature;
+	}
 
-	
+	void setHumidity(double newHumidity) {
+		humidity = newHumidity;
+	}
+
+
+
 
 	// Constructors
 	Climate();
@@ -74,7 +89,7 @@ public:
 	double maximumTemperature(long lookBack);
 	double averageTemperature(long lookBack);
 
-	system_clock::time_point StartTime;
+	
 };
 
 // Constructor
@@ -89,10 +104,7 @@ Climate::Climate() {
 long Climate::sampleCount(long secs) {
 
 	for (int v = (int)secs; v >= 1; v--) {
-		if (temp[v] != NULL) {
-			samples++;
-		}
-		if (hum[v] != NULL) {
+		if (temp[v] != NULL || hum[v] != NULL) {
 			samples++;
 		}
 	}
@@ -293,31 +305,35 @@ void	Climate::clearSamples() {
 
 }
 
-
 long	Climate::readSensor() {
 
+
+	sensorDevice.read_data();
 	system_clock::time_point EndTime = std::chrono::system_clock::now();
-	sensorDevice.read_data();
-
-	//calculate time passed since launch of app
-	std::chrono::duration<double> currentSecond = EndTime - StartTime;
-
-	
-	
-	sensorDevice.read_data();
-
-	//store data in vectors
-	hum[(long)currentSecond.count()] = sensorDevice.get_humidity();
-	temp[(long)currentSecond.count()] = sensorDevice.get_temperature_in_c();
-
-	
-
+	std::chrono::duration<double> Period = EndTime - StartTime;
+	int currentSecond = (int)Period.count();
 	// This line is purely for your debugging and can be removes/commented out in the final code.
-	//cout << endl << "Debugging information : "  << "Temperature is " << sensorDevice.get_temperature_in_c() << " in degrees C " << sensorDevice.get_humidity() << "% humidity" << endl;
-	
-	cout << " Element at index: " << (long)currentSecond.count() << " Temp: "<<temp[(long)currentSecond.count()]<< endl;
-	cout << " Element at index: " << (long)currentSecond.count() << " Hum: " << hum[(long)currentSecond.count()] << endl;
-	
-	return (long)currentSecond.count();
-
+	cout << endl << "Debugging information : " << "Temperature is " << sensorDevice.get_temperature_in_c() << " in degrees C " << sensorDevice.get_humidity() << "% humidity" << endl;	temp[currentSecond] = sensorDevice.get_temperature_in_c();
+	//Set
+	setHumidity(sensorDevice.get_humidity());
+	setTemperature(sensorDevice.get_temperature_in_c());
+	//Get
+	hum[currentSecond] = getHum();
+	temp[currentSecond] = getTemp();
+	if (currentSecond > maximum_readings)
+	{
+		throw out_of_range("Over 24 hour limit");
+	}
+	if (currentSecond < 1)
+	{
+		throw underflow_error("Less than a 1 second from last sample ");
+	}
+	if (sensorDevice.get_temperature_in_c() == NULL || sensorDevice.get_humidity() == NULL)
+	{
+		throw runtime_error("A read attempt has failed");
+	}
+	return currentSecond;
 }
+
+
+

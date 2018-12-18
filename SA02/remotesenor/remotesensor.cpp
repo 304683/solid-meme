@@ -36,7 +36,7 @@
 
 #define number_of_reads 6 // TODO: Change this to specify how may times to read the sensor
 
-#define number_of_seconds 60 * 60
+#define number_of_seconds 6
 
 #if windows == 1
 using namespace System;  // Microsoft Specific
@@ -93,13 +93,13 @@ int main()
 
 	// TODO: Uncomment lines as you implement in climate.hpp
 
-	//cout << "Number of samples taken in the last " << number_of_seconds << " seconds " << roomB114.sampleCount(number_of_seconds) << endl;
-	//cout << "Average Humidity in the last " << number_of_seconds << " seconds " << roomB114.averageHumidity(number_of_seconds) << endl;
-	//cout << "Minimum Humidity in the last " << number_of_seconds << " seconds " << roomB114.minimumHumidity(number_of_seconds) << endl;
-	//cout << "Maximum Humidity in the last " << number_of_seconds << " seconds " << roomB114.maximumHumidity(number_of_seconds) << endl;
-	//cout << "Average Temperature in the last " << number_of_seconds << " seconds " << roomB114.averageTemperature(number_of_seconds) << endl;
-	//cout << "Minimum Temperature in the last " << number_of_seconds << " seconds " << roomB114.minimumTemperature(number_of_seconds) << endl;
-	//cout << "Maximum Temperature in the last " << number_of_seconds << " seconds " << roomB114.maximumTemperature(number_of_seconds) << endl;
+	cout << "Number of samples taken in the last " << number_of_seconds << " seconds " << roomB114.sampleCount(number_of_seconds) << endl;
+	cout << "Average Humidity in the last " << number_of_seconds << " seconds " << roomB114.averageHumidity(number_of_seconds) << endl;
+	cout << "Minimum Humidity in the last " << number_of_seconds << " seconds " << roomB114.minimumHumidity(number_of_seconds) << endl;
+	cout << "Maximum Humidity in the last " << number_of_seconds << " seconds " << roomB114.maximumHumidity(number_of_seconds) << endl;
+	cout << "Average Temperature in the last " << number_of_seconds << " seconds " << roomB114.averageTemperature(number_of_seconds) << endl;
+	cout << "Minimum Temperature in the last " << number_of_seconds << " seconds " << roomB114.minimumTemperature(number_of_seconds) << endl;
+	cout << "Maximum Temperature in the last " << number_of_seconds << " seconds " << roomB114.maximumTemperature(number_of_seconds) << endl;
 	//cout << roomB114("humidity", 1) << ", " << roomB114("temperature", 1) << endl;
 
 
